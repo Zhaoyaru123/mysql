@@ -4,7 +4,7 @@ Microsoft Windows [°æ±¾ 10.0.17134.345]
 C:\WINDOWS\system32>mysql -u root -p
 Enter password: ******
 Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 44
+Your MySQL connection id is 45
 Server version: 8.0.12 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
@@ -17,102 +17,74 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql> use taobao1;
 Database changed
-mysql> create table collect(id int primary key auto_increment,name varchar(10) not null,money varchar(5),zhiliang varchar(7));
-Query OK, 0 rows affected (0.05 sec)
+mysql> create table film(id int auto_increment primary key,name varchar(10) not null,year int(5),direct varchar(5) not null,grade int(5));
+Query OK, 0 rows affected (0.09 sec)
 
-mysql> desc collect;
-+----------+-------------+------+-----+---------+----------------+
-| Field    | Type        | Null | Key | Default | Extra          |
-+----------+-------------+------+-----+---------+----------------+
-| id       | int(11)     | NO   | PRI | NULL    | auto_increment |
-| name     | varchar(10) | NO   |     | NULL    |                |
-| money    | varchar(5)  | YES  |     | NULL    |                |
-| zhiliang | varchar(7)  | YES  |     | NULL    |                |
-+----------+-------------+------+-----+---------+----------------+
-4 rows in set (0.01 sec)
+mysql> desc film;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(10) | NO   |     | NULL    |                |
+| year   | int(5)      | YES  |     | NULL    |                |
+| direct | varchar(5)  | NO   |     | NULL    |                |
+| grade  | int(5)      | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
 
-mysql> insert into collect(name,money,zhiliang) values('shoes','100','great'),('shirt','50','good'),('pants','80','very good');
-ERROR 1406 (22001): Data too long for column 'zhiliang' at row 3
-mysql> insert into collect(name,money,zhiliang) values('shoes','100','great'),('shirt','50','good'),('pants','80','good');
-Query OK, 3 rows affected (0.07 sec)
+mysql> insert into film(id,name,year,direct,grade) values(1,'xiaoshidai','2003','guojingming','4.7'),(2,'aiqinggongyu','2018','weizheng','4.5'),(3,'zhanlang2','2018','wujing','8.0');
+ERROR 1406 (22001): Data too long for column 'direct' at row 1
+mysql> insert into film(id,name,year,direct,grade) values(1,'xsd','2003','gjm','4.7'),(2,'aqgy','2018','wz','4.5'),(3,'zl2','2018','wj','8.0');
+Query OK, 3 rows affected (0.01 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql> select * from collect;
-+----+-------+-------+----------+
-| id | name  | money | zhiliang |
-+----+-------+-------+----------+
-|  4 | shoes | 100   | great    |
-|  5 | shirt | 50    | good     |
-|  6 | pants | 80    | good     |
-+----+-------+-------+----------+
+mysql> select * from film;
++----+------+------+--------+-------+
+| id | name | year | direct | grade |
++----+------+------+--------+-------+
+|  1 | xsd  | 2003 | gjm    |     5 |
+|  2 | aqgy | 2018 | wz     |     5 |
+|  3 | zl2  | 2018 | wj     |     8 |
++----+------+------+--------+-------+
 3 rows in set (0.00 sec)
 
-mysql> insert into collect(name) value ('book');
-Query OK, 1 row affected (0.05 sec)
+mysql> select name from film where name like '%wj';
+Empty set (0.00 sec)
 
-mysql> select * from collect;
-+----+-------+-------+----------+
-| id | name  | money | zhiliang |
-+----+-------+-------+----------+
-|  4 | shoes | 100   | great    |
-|  5 | shirt | 50    | good     |
-|  6 | pants | 80    | good     |
-|  7 | book  | NULL  | NULL     |
-+----+-------+-------+----------+
-4 rows in set (0.00 sec)
+mysql> select name from film where name like 'wj%';
+Empty set (0.00 sec)
 
-mysql> select *,hex(name) from collect;
-+----+-------+-------+----------+------------+
-| id | name  | money | zhiliang | hex(name)  |
-+----+-------+-------+----------+------------+
-|  4 | shoes | 100   | great    | 73686F6573 |
-|  5 | shirt | 50    | good     | 7368697274 |
-|  6 | pants | 80    | good     | 70616E7473 |
-|  7 | book  | NULL  | NULL     | 626F6F6B   |
-+----+-------+-------+----------+------------+
-4 rows in set (0.00 sec)
+mysql> select name from film where name like '%zl2';
++------+
+| name |
++------+
+| zl2  |
++------+
+1 row in set (0.00 sec)
 
-mysql> update table collect set book;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table collect set book' at line 1
-mysql> update table collect set 'book';
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table collect set 'book'' at line 1
-mysql> update table collect set 'pants';
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table collect set 'pants'' at line 1
-mysql> delete from collect where id=6;
-Query OK, 1 row affected (0.06 sec)
+mysql> select direct from film where direct like 'wj%';
++--------+
+| direct |
++--------+
+| wj     |
++--------+
+1 row in set (0.00 sec)
 
-mysql> select * from collect;
-+----+-------+-------+----------+
-| id | name  | money | zhiliang |
-+----+-------+-------+----------+
-|  4 | shoes | 100   | great    |
-|  5 | shirt | 50    | good     |
-|  7 | book  | NULL  | NULL     |
-+----+-------+-------+----------+
-3 rows in set (0.00 sec)
+mysql> select year from film where year like '%2018';
++------+
+| year |
++------+
+| 2018 |
+| 2018 |
++------+
+2 rows in set (0.00 sec)
 
-mysql> alter table name add unique('collect');
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''collect')' at line 1
-mysql> alter table collect add unique('name');
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''name')' at line 1
-mysql> alter table 'collect' add unique('name');
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''collect' add unique('name')' at line 1
-mysql> alter table 'name' add unique('collect');
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''name' add unique('collect')' at line 1
-mysql> alter table name add unique(collect);
-ERROR 1146 (42S02): Table 'taobao1.name' doesn't exist
-mysql> alter table collect add unique(name);
-Query OK, 0 rows affected (0.12 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> select * from collect;
-+----+-------+-------+----------+
-| id | name  | money | zhiliang |
-+----+-------+-------+----------+
-|  4 | shoes | 100   | great    |
-|  5 | shirt | 50    | good     |
-|  7 | book  | NULL  | NULL     |
-+----+-------+-------+----------+
-3 rows in set (0.00 sec)
+mysql> select max(grade) from film;
++------------+
+| max(grade) |
++------------+
+|          8 |
++------------+
+1 row in set (0.00 sec)
 
 mysql>
