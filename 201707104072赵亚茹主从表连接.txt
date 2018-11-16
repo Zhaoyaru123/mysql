@@ -1,0 +1,14 @@
+use taobao1;
+
+-- insert into player(player_name,player_password) values ('palyer1','258000'),('palyer2','222222'),
+
+-- ('player3','666666');
+
+-- select * from player;
+
+insert into equip(equip_name,equip_cash,player_id) values ('equip1',500,1),('equip2',900,2),('equip3',700,3);
+
+select * from equip;
+-- update equip set equip_id=200 where equip_id=1;
+
+insert into equip(equip_name,idDelete) values('equip4',0);

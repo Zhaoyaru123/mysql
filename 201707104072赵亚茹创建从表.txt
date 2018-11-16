@@ -1,0 +1,24 @@
+创建从表
+use taobao1;
+
+create table equip(equip_id smallint unsigned not null auto_increment primary key,
+
+iddelete varchar(1),
+
+equip_name varchar(50) not null,
+
+equip_cash int(10) not null,
+player_id smallint unsigned not null,
+
+last_update timestamp not null default current_timestamp on update current_timestamp,
+
+key `idx_fk_player_id` (player_id),
+
+constraint `fk_equip_id ` foreign key(player_id)
+references player(player_id) 
+on delete restrict on update cascade)
+
+engine=innodb default charset=utf8;
+
+
+
