@@ -1,0 +1,18 @@
+¥¥Ω® ”Õº
+use taobao1;
+
+-- create or replace view view_player as select * from player; 
+
+-- select * from view_player;
+
+-- create or replace view view_equip as select * from equip;
+
+-- select * from view_equip;
+
+create or replace view player_equip_view(v1,v2) as 
+select pl.player_name,
+eq.equip_name from player as pl,equip as eq
+
+where pl.player_id=eq.equip_id;
+
+select * from player_equip_view;
